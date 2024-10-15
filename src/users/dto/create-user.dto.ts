@@ -1,0 +1,35 @@
+import {
+  IsEmail,
+  IsString,
+  IsOptional,
+  MinLength,
+  IsArray,
+  IsEnum,
+} from 'class-validator';
+import { Role } from 'src/auths/enums/role.enum';
+
+export class CreateUserDto {
+  @IsEmail({}, { message: 'Email không hợp lệ, vui lòng nhập lại' })
+  email: string;
+
+  @IsString({ message: 'Mật khẩu phải là chuỗi' })
+  @MinLength(6, { message: 'Mật khẩu phải có ít nhất 6 ký tự' })
+  password: string;
+
+  @IsOptional()
+  @IsString({ message: 'Tên không được để trống' })
+  firstName: string;
+
+  @IsOptional()
+  @IsString({ message: 'Họ không được để trống' })
+  lastName: string;
+
+  @IsArray()
+  @IsEnum(Role, { each: true })
+  @IsOptional()
+  role: Role[];
+
+  constructor() {
+    this.role = [Role.User];
+  }
+}
